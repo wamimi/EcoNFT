@@ -2,5 +2,5 @@
 pragma solidity ^0.8.20;
 
 interface IRewards {
-    function awardPoints(address user, uint256 amount) external;
+    function issueRewards(address user, uint256 amount) external;
 }
