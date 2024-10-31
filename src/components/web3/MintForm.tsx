@@ -1,46 +1,56 @@
 // src/components/web3/MintForm.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useWeb3 } from '@/contexts/Web3Context'
-import { VottunIPFS } from '@/utils/vottun/ipfs'
-import { VottunNFT } from '@/utils/vottun/nft721'
 import { Card } from '../common/Card'
+import { VottunIPFS } from '@/utils/vottun/ipfs'
+import { useRouter } from 'next/navigation'
 
-export function MintForm() {
+function MintForm() {
+  const router = useRouter()
+  const { mintNFT } = useWeb3()
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     carbonCredits: '',
     projectId: '',
     verificationStandard: '',
-    vintage: new Date().getFullYear().toString()
+    vintage: String(new Date().getFullYear())
   })
   const [file, setFile] = useState<File | null>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
-  }
+  }, [])
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       setFile(e.target.files[0])
     }
-  }
+  }, [])
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!file) return
+    if (!file) {
+      setError('Please select a file')
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
 
     try {
-      setIsLoading(true)
-      
-      // Upload image to IPFS
+      // 1. Upload image to IPFS
+      console.log('Uploading image to IPFS...')
+      console.log('File to upload:', file)
       const imageUpload = await VottunIPFS.uploadFile(file)
-      
-      // Create metadata
+      console.log('Image uploaded:', imageUpload)
+
+      // 2. Create and upload metadata
       const metadata = {
         name: formData.name,
         description: formData.description,
@@ -49,6 +59,18 @@ export function MintForm() {
           {
             trait_type: "Carbon Credits",
             value: parseInt(formData.carbonCredits)
+          },
+          {
+            trait_type: "Project ID",
+            value: formData.projectId
+          },
+          {
+            trait_type: "Verification Standard",
+            value: formData.verificationStandard
+          },
+          {
+            trait_type: "Vintage Year",
+            value: parseInt(formData.vintage)
           }
         ],
         data: {
@@ -59,20 +81,59 @@ export function MintForm() {
         }
       }
 
-      // Upload metadata to IPFS
+      console.log('Uploading metadata to IPFS...')
+      console.log('Metadata to upload:', metadata)
       const metadataUpload = await VottunIPFS.uploadMetadata(metadata)
+      console.log('Metadata uploaded:', metadataUpload)
 
-      // TODO: Call your smart contract to mint the NFT
+      // 3. Mint NFT
+      console.log('Minting NFT...')
+      const txHash = await mintNFT(
+        metadataUpload.IpfsHash, 
+        parseInt(formData.carbonCredits)
+      )
+      console.log('NFT minted successfully:', txHash)
+
+      // Reset form
+      setFormData({
+        name: '',
+        description: '',
+        carbonCredits: '',
+        projectId: '',
+        verificationStandard: '',
+        vintage: String(new Date().getFullYear())
+      })
+      setFile(null)
+
+      // Reset file input
+      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+      if (fileInput) {
+        fileInput.value = ''
+      }
+
+      // Show success message
+      alert('NFT minted successfully!')
       
+      // Redirect to dashboard
+      router.push('/dashboard')
+
     } catch (error) {
-      console.error('Error minting NFT:', error)
+      console.error('Minting error:', error)
+      setError(error instanceof Error ? error.message : 'Error minting NFT')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [file, formData, mintNFT, router])
 
-  return (
+// Add this return statement with all the form JSX
+return (
     <Card className="max-w-2xl mx-auto">
+      {error && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-sm text-red-600">{error}</p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -185,9 +246,13 @@ export function MintForm() {
             isLoading ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
-          {isLoading ? 'Minting...' : 'Mint NFT'}
+          {isLoading ? 'Processing...' : 'Mint NFT'}
         </button>
       </form>
     </Card>
-  )
+);
+  // Rest of your component remains the same...
+  // (Keep all the JSX exactly as it was)
 }
+
+export default MintForm

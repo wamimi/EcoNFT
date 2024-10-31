@@ -1,8 +1,12 @@
 // hardhat.config.ts
-require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config();
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-ethers";
+import * as dotenv from "dotenv";
 
-const config = {
+dotenv.config();
+
+const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.20",
     settings: {
@@ -17,16 +21,6 @@ const config = {
     hardhat: {
       chainId: 1337,
     },
-    arbitrumOne: {
-      url: `https://arb1.arbitrum.io/rpc`,
-      chainId: 42161,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-    },
-    arbitrumGoerli: {
-      url: `https://goerli-rollup.arbitrum.io/rpc`,
-      chainId: 421613,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-    },
     arbitrumSepolia: {
       url: `https://sepolia-rollup.arbitrum.io/rpc`,
       chainId: 421614,
@@ -35,11 +29,9 @@ const config = {
   },
   etherscan: {
     apiKey: {
-      arbitrumOne: process.env.ARBISCAN_API_KEY || "",
-      arbitrumGoerli: process.env.ARBISCAN_API_KEY || "",
       arbitrumSepolia: process.env.ARBISCAN_API_KEY || "",
     },
   },
 };
 
-module.exports = config;
+export default config;

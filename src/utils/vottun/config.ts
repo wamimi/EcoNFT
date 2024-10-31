@@ -1,7 +1,7 @@
 // src/utils/vottun/config.ts
 export const VOTTUN_CONFIG = {
-    NFT_API_URL: 'https://api.vottun.tech/erc/v1/erc721',
-    IPFS_API_URL: 'https://ipfsapi-v2.vottun.tech/ipfs/v2',
-    API_KEY: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI3MjM1OTcsImp0aSI6IjJvNGIzaUFlUEFmQUxlSGhTdThieG56cEpFNSIsInR5cGUiOiJlcnAiLCJpZCI6IiIsInVzZXJuYW1lIjoibmVsbHljeWJlcnByb0BnbWFpbC5jb20iLCJjaWQiOiI5ZjFiMGZlYS1kNWVhLTQwYTMtOTc3Zi1kYjE1MmEwMzc0NmUiLCJza3UiOlt7InIiOjExLCJzIjo4MDAyLCJlIjowfSx7InIiOjExLCJzIjo4MDEwLCJlIjowfV0sInB1YyI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.d1XkEGFx7AG8kRsxV__--ecvp_iLfQPtmrgE61a_7fHMEoriQd21N3yGA6BMuBXPStar2PlwNTSAI0eQ5RbUgDW00IKhvUcOeMHsiUF0ctvBcvHx662LGloi-dQp1RXiyRTwTcupc5BymzJAddHsFf26xJ2NmJSWiNLqFrKAbHcFalLShiIMc3Cv5OvBl_zsqpHU6wqifjoiFMIaGIi_CKA1uNE2MHfE8cm4Dfq-sKqg1iH-YtIoe_tX9gTyN2xF87DriK0Sxju5pqBVtyMNGjslLY2BhSlusNWhys9VtI8xQGYnKopvC1d_K08Tti_CocMoQ1xs9vph_HaPU26Qfx6q1UcE9BAXSUmrEckIPiHSg0xk6XZqoWCbAmc65MVS2jtLa638Z-Gh6Bo5dPzogWJGXiaYyr4J7eyI5K10MyEwCzLu6nlELo_1wNI4cypGd5sewyIGOhkgYaJlB2yyyYrPmbxSZfNNjlqa1nmR6CZFgIU69jeAqm0z-UMk7vv2IYcniFBMD6hvO9D2stHKMgnFuEa-aKTbOsqEHNjzc2Y9JD_alVdfIjLl98bqfTOS9dbOpBH4X5mZ7vvr58-PRkft1WwJU4o-aiEGFT5LRUOK2hzwr7J3MsnoSulnZBwrfy-N08Ci-Se85DWlVBcVPTL1EfzNJD8lFCTqTJUjMpY',
-    NETWORK_ID: 421614, // Arbitrum Sepolia
-  };
+  IPFS_API_URL: 'https://ipfsapi-v2.vottun.tech/ipfs/v2',
+  NFT_API_URL: 'https://api.vottun.tech/erc/v1/erc721',
+  API_KEY: process.env.NEXT_PUBLIC_VOTTUN_API_KEY,
+  NETWORK_ID: 421614 // Arbitrum Sepolia chain ID
+}

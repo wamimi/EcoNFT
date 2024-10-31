@@ -16,7 +16,7 @@ export interface NFTData {
 }
 
 interface Web3ContextType {
-  userNFTs: NFTData[]  // Specify array type explicitly
+  userNFTs: NFTData[]
   userStats: {
     totalNFTs: number
     totalCarbonCredits: number
@@ -31,12 +31,19 @@ const Web3Context = createContext<Web3ContextType | undefined>(undefined)
 export function Web3Provider({ children }: { children: ReactNode }) {
   const ecoNFT = useEcoNFT()
 
-  // Ensure the value matches the expected type
   const value: Web3ContextType = {
     userNFTs: ecoNFT.userNFTs as NFTData[],
     userStats: ecoNFT.userStats,
     isLoading: ecoNFT.isLoading,
-    mintNFT: ecoNFT.mintNFT
+    mintNFT: async (uri: string, carbonCredits: number) => {
+      try {
+        const tx = await ecoNFT.mintNFT(uri, carbonCredits)
+        return tx as `0x${string}`
+      } catch (error) {
+        console.error('Minting error in context:', error)
+        throw error
+      }
+    }
   }
 
   return (

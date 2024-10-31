@@ -1,5 +1,5 @@
 // src/app/mint/page.tsx
-import { MintForm } from '@/components/web3/MintForm'
+import { MintFormWrapper } from '@/components/web3/MintFormWrapper'
 
 export default function MintPage() {
   return (
@@ -7,7 +7,7 @@ export default function MintPage() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">
         Mint Carbon Credit NFT
       </h1>
-      <MintForm />
+      <MintFormWrapper />
     </div>
   )
 }
