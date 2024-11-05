@@ -46,7 +46,6 @@ function MintForm() {
     try {
       // 1. Upload image to IPFS
       console.log('Uploading image to IPFS...')
-      console.log('File to upload:', file)
       const imageUpload = await VottunIPFS.uploadFile(file)
       console.log('Image uploaded:', imageUpload)
 
@@ -56,22 +55,10 @@ function MintForm() {
         description: formData.description,
         image: imageUpload.hash,
         attributes: [
-          {
-            trait_type: "Carbon Credits",
-            value: parseInt(formData.carbonCredits)
-          },
-          {
-            trait_type: "Project ID",
-            value: formData.projectId
-          },
-          {
-            trait_type: "Verification Standard",
-            value: formData.verificationStandard
-          },
-          {
-            trait_type: "Vintage Year",
-            value: parseInt(formData.vintage)
-          }
+          { trait_type: "Carbon Credits", value: parseInt(formData.carbonCredits) },
+          { trait_type: "Project ID", value: formData.projectId },
+          { trait_type: "Verification Standard", value: formData.verificationStandard },
+          { trait_type: "Vintage Year", value: parseInt(formData.vintage) }
         ],
         data: {
           carbonCredits: parseInt(formData.carbonCredits),
@@ -82,16 +69,12 @@ function MintForm() {
       }
 
       console.log('Uploading metadata to IPFS...')
-      console.log('Metadata to upload:', metadata)
       const metadataUpload = await VottunIPFS.uploadMetadata(metadata)
       console.log('Metadata uploaded:', metadataUpload)
 
       // 3. Mint NFT
       console.log('Minting NFT...')
-      const txHash = await mintNFT(
-        metadataUpload.IpfsHash, 
-        parseInt(formData.carbonCredits)
-      )
+      const txHash = await mintNFT(metadataUpload.IpfsHash, parseInt(formData.carbonCredits))
       console.log('NFT minted successfully:', txHash)
 
       // Reset form
@@ -125,9 +108,8 @@ function MintForm() {
     }
   }, [file, formData, mintNFT, router])
 
-// Add this return statement with all the form JSX
-return (
-    <Card className="max-w-2xl mx-auto">
+  return (
+    <Card className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       {error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
           <p className="text-sm text-red-600">{error}</p>
@@ -136,37 +118,31 @@ return (
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Project Name
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Project Name</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 transition duration-300"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             required
             rows={3}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 transition duration-300"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Project Image
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Project Image</label>
           <input
             type="file"
             accept="image/*"
@@ -178,9 +154,7 @@ return (
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Carbon Credits (tons)
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Carbon Credits (tons)</label>
             <input
               type="number"
               name="carbonCredits"
@@ -188,44 +162,38 @@ return (
               onChange={handleChange}
               required
               min="1"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 transition duration-300"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Project ID
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Project ID</label>
             <input
               type="text"
               name="projectId"
               value={formData.projectId}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 transition duration-300"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Verification Standard
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Verification Standard</label>
             <input
               type="text"
               name="verificationStandard"
               value={formData.verificationStandard}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 transition duration-300"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Vintage Year
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Vintage Year</label>
             <input
               type="number"
               name="vintage"
@@ -234,7 +202,7 @@ return (
               required
               min="2000"
               max={new Date().getFullYear()}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 transition duration-300"
             />
           </div>
         </div>
@@ -250,9 +218,7 @@ return (
         </button>
       </form>
     </Card>
-);
-  // Rest of your component remains the same...
-  // (Keep all the JSX exactly as it was)
+  );
 }
 
 export default MintForm

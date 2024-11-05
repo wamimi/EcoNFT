@@ -5,17 +5,61 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #4caf50; /* Green for EcoNFT theme */
+  --secondary: #81c784; /* Lighter green */
+  --accent: #ffeb3b; /* Yellow for highlights */
+  --border-color: #e0e0e0; /* Light border color */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #66bb6a; /* Darker green for dark mode */
+    --secondary: #a5d6a7; /* Lighter green for dark mode */
+    --accent: #ffd54f; /* Yellow for highlights in dark mode */
+    --border-color: #424242; /* Darker border color */
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif; /* Modern font stack */
+  transition: background 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif; /* Use a more modern font for headings */
+  font-weight: 600; /* Slightly bolder headings */
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s ease; /* Smooth color transition for links */
+}
+
+a:hover {
+  color: var(--accent); /* Change color on hover */
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth button transitions */
+}
+
+button:hover {
+  transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+input, textarea {
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem; /* Rounded corners */
+  padding: 0.5rem;
+  transition: border-color 0.3s ease; /* Smooth border transition */
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary); /* Change border color on focus */
+  outline: none; /* Remove default outline */
 }

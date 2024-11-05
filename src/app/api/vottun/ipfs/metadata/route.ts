@@ -8,6 +8,9 @@ export async function POST(req: NextRequest) {
     // Log the incoming metadata for debugging
     console.log('Metadata received:', body)
 
+    console.log(`Bearer ${process.env.NEXT_PUBLIC_VOTTUN_API_KEY}`);
+    
+
     const response = await fetch('https://ipfsapi-v2.vottun.tech/ipfs/v2/file/metadata', {
       method: 'POST',
       headers: {
